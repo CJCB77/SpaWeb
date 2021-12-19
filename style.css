@@ -12,3 +12,23 @@
   height: 90vh;
   width: 100%;
 }
+
+.hero-title{
+  transform: translate(-50%,-50%);
+  color: #fff;
+}
+.title{
+  font-size: 5rem;
+  color: #9AE66E;
+}
+
+.form {
+  width: 50%;
+  margin: 3rem auto;
+  background-color: #F8F9FA;
+  padding: 1.5rem;
+  border-radius: 1rem;
+
+}
+
+
