@@ -22,6 +22,12 @@ class Usuario {
 }
 //Lista donde guardaremos los usuarios
 let listaUsuarios = []
+const listaUsuariosLocal = JSON.parse(localStorage.getItem('usuarios'))
+
+if (listaUsuariosLocal) {
+    listaUsuarios = listaUsuariosLocal
+}
+
 
 
 registroBtn.addEventListener('click', () => {
@@ -39,11 +45,17 @@ registroBtn.addEventListener('click', () => {
         let usuario = new Usuario(cedula.value,nombre.value, apellido.value, direccion.value, 
                                     celular.value, correo.value)
         listaUsuarios.push(usuario)
+        localStorage.setItem('usuarios', JSON.stringify(listaUsuarios))
         mensajeError.style.color = "#000"
         mensajeError.innerText = "Sus datos han sido registrados con exito!"
-        window.location = "index.html"
+        
         
 
     }
 
 })
+
+for (let i = 0; i < listaUsuarios.length; i++) {
+    console.log(listaUsuarios[i].apellido)
+    
+}
