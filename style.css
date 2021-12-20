@@ -46,6 +46,15 @@
   padding: 1rem;
 }
 
+.services {
+  background-color: #F8F9FA;
+  padding: 4rem 5rem;
+}
+
+.services-grid {
+  margin-top: 2rem;
+}
+
 .form {
   width: 50%;
   margin: 3rem auto;
