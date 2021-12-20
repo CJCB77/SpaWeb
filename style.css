@@ -22,6 +22,30 @@
   color: #9AE66E;
 }
 
+.about {
+  height: 100vh;
+  background-color: #FAEDC6;
+}
+
+.about-container{
+  background-color: #fff;
+  width: 90%;
+  margin: 0 auto;
+  height: 85vh;
+  border-radius: 1rem;
+}
+
+.about-img {
+  background-image: url(imgs/about.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 1rem 0 0 1rem;
+}
+
+.about-text {
+  padding: 1rem;
+}
+
 .form {
   width: 50%;
   margin: 3rem auto;
@@ -34,5 +58,6 @@
 .error-message{
   color: #F05454;
 }
+
 
 
