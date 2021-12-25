@@ -23,7 +23,7 @@
 }
 
 .about {
-  height: 100vh;
+  padding: 3rem 0;
   background-color: #FAEDC6;
 }
 
@@ -31,7 +31,6 @@
   background-color: #fff;
   width: 90%;
   margin: 0 auto;
-  height: 85vh;
   border-radius: 1rem;
 }
 
@@ -55,6 +54,36 @@
   margin-top: 2rem;
 }
 
+.sucursales {
+  padding: 4rem 5rem;
+}
+
+.btn-sucursales {
+  display: flex;
+  border-bottom: 1px solid #D3E4CD;
+}
+.btn-sucursal {
+  background: transparent;
+  border:none;
+  outline: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  padding-right: 4rem;
+}
+.sede-active  {
+  background: #D3E4CD;
+  color: #fff;
+}
+
+.btn-sucursales button:hover {
+  background:#D3E4CD ;
+  color: #fff;
+}
+
+.carousel-img {
+  height: 28rem;
+}
+
 .form {
   width: 50%;
   margin: 3rem auto;
@@ -64,8 +93,33 @@
 
 }
 
+#sede-sur {
+  display: none;  
+}
+#sede-centro {
+  display: none;  
+}
+
+#map-sur { 
+  height: 300px; 
+}
+
+#map-norte { 
+  height: 300px; 
+}
+
+#map-centro { 
+  height: 300px; 
+}
+
+
 .error-message{
-  color: #F05454;
+  color: #814e4e;
+}
+
+.footer {
+  background-color: #F8F9FA;
+  padding-top: 0.9rem;
 }
 
 
