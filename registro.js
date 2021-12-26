@@ -48,14 +48,11 @@ registroBtn.addEventListener('click', () => {
         localStorage.setItem('usuarios', JSON.stringify(listaUsuarios))
         mensajeError.style.color = "#000"
         mensajeError.innerText = "Sus datos han sido registrados con exito!"
-        
-        
+
+        window.location = "login.html"    
+            
 
     }
 
 })
 
-for (let i = 0; i < listaUsuarios.length; i++) {
-    console.log(listaUsuarios[i].apellido)
-    
-}

@@ -112,6 +112,29 @@
   height: 300px; 
 }
 
+.login {
+  animation: fadeIn 2s ease-out;
+}
+
+.datos-usuario {
+  animation: fadeIn 2s ease-out;
+  display: none;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+    transform: translateX(2%);
+  }
+  100%{
+    transform: translateX(0);
+  }
+  
+}
 
 .error-message{
   color: #814e4e;
