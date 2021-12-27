@@ -121,6 +121,16 @@
   display: none;
 }
 
+.seleccion-datos {
+  animation: fadeIn 2s ease-out;
+  display: none;
+}
+
+.seleccion-servicio {
+  animation: fadeIn 2s ease-out;
+  display: none;
+}
+
 @keyframes fadeIn {
   0% {
     transform: translateX(-100%);
@@ -136,9 +146,7 @@
   
 }
 
-.servicios-control {
-  display: none;
-}
+
 
 .calendario {
   display: none;

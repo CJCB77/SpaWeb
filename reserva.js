@@ -17,9 +17,13 @@ const confirmarBtn = document.getElementById("confirmarBtn")
 const messageReserva = document.getElementById("message-reserva")
 
 //Servicios
+const serviciosSeccion = document.getElementById("seleccion-servicio")
 const serviciosDiv = document.getElementById("servicios-control")
 const serviciosSelect = document.getElementById("servicio")
+const costoServicio = document.getElementById("costo")
+const siguienteBtn = document.getElementById("siguienteBtn")
 //Sucursal
+const datosReserva = document.getElementById("seleccion-datos")
 const sucursalesSelect = document.getElementById("sucursal-lista")
 //Fecha
 const fecha = document.getElementById("fecha")
@@ -28,6 +32,26 @@ const calendario = document.getElementById("calendario")
 const horariosDiv = document.getElementById("horario-control")
 const horariosSelect = document.getElementById("horarios")
 const horasDisponibles = document.getElementById("hora")
+//Boton de reserva
+const btnReserva = document.getElementById("reservarBtn")
+
+class Reserva {
+    constructor(usuario, sucursal, servicio, fecha, hora){
+        this.usuario = usuario
+        this.sucursal = sucursal
+        this.servicio = servicio
+        this.fecha = fecha
+        this.hora = hora
+        
+    }
+}
+
+let listaReservas = []
+const listaLocalReservas = JSON.parse(localStorage.getItem('reservas'))
+
+if (listaLocalReservas) {
+    listaReservas = listaLocalReservas
+}
 
 const servicios = [
     {
@@ -65,9 +89,9 @@ const servicios = [
 const dias = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo']
 
 const horarios = [
-    {mañana: {"9h00":true, "10h00":true, "11h00":true, "12h00":true, "13h00":true}},
-    {tarde: {"14h00":true, "15h00":true, "16h00":true, "17h00":true, "18h00":true}},
-    {noche: {"14h00":true, "15h00":true, "16h00":true, "17h00":true, "18h00":true}},
+    {mañana: ["9h00", "10h00", "11h00", "12h00", "13h00"]},
+    {tarde: ["14h00", "15h00", "16h00", "17h00", "18h00"]},
+    {noche: ["18h00", "19h00", "20h00", "21h00"]},
 ]
 
 
@@ -80,18 +104,15 @@ const sucursales = [
 
 //Cargar sucursales
 sucursales.forEach(e => {
-    sucursalesSelect.innerHTML += ` <option value=${e.nombre}>${e.nombre.toUpperCase()}</option>`
+    sucursalesSelect.innerHTML += ` <option value='${e.nombre}'>${e.nombre.toUpperCase()}</option>`
 })
 
 //Cargar los Servicios disponibles
 servicios.forEach(e => {
-    serviciosSelect.innerHTML += ` <option value=${e.nombre}>${e.nombre.toUpperCase()}</option>`
+    serviciosSelect.innerHTML += ` <option value='${e.nombre}'>${e.nombre.toUpperCase()}</option>`
 })
 
-
-
-
-
+//Validar si el usuario esta registrado
 const usuarios_registrados = JSON.parse(localStorage.getItem("usuarios"))
 let usuario
 
@@ -118,7 +139,7 @@ loginBtn.addEventListener('click', () => {
         direccion.value = usuario.direccion 
         celular.value = usuario.celular 
         correo.value = usuario.correo 
-
+        
     } else {
         message.innerText = "Datos incorrectos o no esta registrado"
     }
@@ -130,13 +151,43 @@ regresarBtn.addEventListener('click', () => {
     ingreso.style.display = "block"
 })
 
+confirmarBtn.addEventListener('click', () => {
+    datosUsuario.style.display = "none"
+    serviciosSeccion.style.display = "block"
+})
+
+siguienteBtn.addEventListener('click', () => {
+    serviciosSeccion.style.display = "none"
+    datosReserva.style.display = "block"
+    
+})
+
+//Seccion de reserva de servicios
+let costo
+let servicioReservado
+let sucursal
+let date
+let turno
+
+function cargarCosto(servicio){
+    servicios.forEach( (e) => {
+        if(e.nombre === servicio.value){
+            servicioReservado = e
+            costo = e['costo']
+        }
+    })
+    
+    costoServicio.innerText = `$${costo}`
+}
+
+
 function cargarCampos() {
-    serviciosDiv.style.display = "block"
     calendario.style.display = "block"
 }
 
+
 function cargarHorarios() {
-    let date = new Date(fecha.value)
+    date = new Date(fecha.value)
     let dia = dias[date.getDay()] 
 
     if(dia == "domingo"){
@@ -156,13 +207,13 @@ function cargarHorarios() {
                 })
                 return sede
             }
-        let seleccion = buscarSede()
+        sucursal = buscarSede()
     
         //Limpiar horarios
-        horariosSelect.innerHTML = ''
-        seleccion['horario'].forEach(e => {
+        horariosSelect.innerHTML = '<option selected>Seleccione el turno</option>'
+        sucursal['horario'].forEach(e => {
             if(Object.keys(e)[0] != 'noche'){
-                horariosSelect.innerHTML += ` <option value=${Object.keys(e)[0]}>${Object.keys(e)[0].toUpperCase()}</option>`
+                horariosSelect.innerHTML += ` <option value='${Object.keys(e)[0]}'>${Object.keys(e)[0].toUpperCase()}</option>`
             }
         })
     
@@ -179,11 +230,11 @@ function cargarHorarios() {
                 })
                 return sede
             }
-        let seleccion = buscarSede()
+        sucursal = buscarSede()
     
         //Limpiar horarios
-        horariosSelect.innerHTML = ''
-        seleccion['horario'].forEach(e => {
+        horariosSelect.innerHTML = '<option selected>Seleccione el turno</option>'
+        sucursal['horario'].forEach(e => {
             horariosSelect.innerHTML += ` <option value=${Object.keys(e)[0]}>${Object.keys(e)[0].toUpperCase()}</option>`
         })
     
@@ -193,9 +244,31 @@ function cargarHorarios() {
 }
 
 function cargarDisponibles(horario) {
-    
+    let horasOcupadas = []
+    sucursal['horario'].forEach( (e) => {
+        if(Object.keys(e)[0] == horario.value){
+            turno = e[horario.value]
+        }
+    })
+    horasDisponibles.innerHTML = ""
+    listaReservas.forEach( reserva => {
+        if(reserva.fecha == fecha.value){
+            horasOcupadas.push(reserva.hora)
+        }
+    })
+    console.log(horasOcupadas)
+    turno.forEach((hora) => {
+        if(!(horasOcupadas.includes(hora))){
+            horasDisponibles.innerHTML += `<option value='${hora}'>${hora}</option>`
+        }
+    })
+
+   
 }
 
-confirmarBtn.addEventListener('click', () => {
-
+btnReserva.addEventListener('click', () => {
+    reserva = new Reserva(usuario, sucursal, servicioReservado ,fecha.value, horasDisponibles.value)
+    listaReservas.push(reserva)
+    localStorage.setItem("reservas", JSON.stringify(listaReservas))
+   
 })

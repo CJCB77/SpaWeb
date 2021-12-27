@@ -49,7 +49,7 @@ registroBtn.addEventListener('click', () => {
         mensajeError.style.color = "#000"
         mensajeError.innerText = "Sus datos han sido registrados con exito!"
 
-        window.location = "login.html"    
+        window.location = "reserva.html"    
             
 
     }
