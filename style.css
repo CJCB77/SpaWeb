@@ -136,6 +136,18 @@
   
 }
 
+.servicios-control {
+  display: none;
+}
+
+.calendario {
+  display: none;
+}
+
+.horario-control {
+  display: none;
+}
+
 .error-message{
   color: #814e4e;
 }
