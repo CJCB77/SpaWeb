@@ -54,14 +54,14 @@ btnSur.addEventListener('click', () => {
 })
 
 
-let mapNorte = L.map('map-norte').setView([-2.170013, -79.899671], 18)
-let markerNorte = L.marker([-2.170013, -79.899671]).addTo(mapNorte);
+let mapNorte = L.map('map-norte').setView([-2.1677826347720885,-79.94102479840805], 15)
+let markerNorte = L.marker([-2.1677826347720885,-79.94102479840805]).addTo(mapNorte);
 
-let mapSur = L.map('map-sur').setView([-2.222803, -79.894746], 18)
-let markerSur = L.marker([-2.222803, -79.894746]).addTo(mapSur);
+let mapSur = L.map('map-sur').setView([-2.2206893662065252, -79.89299219912829], 15)
+let markerSur = L.marker([-2.2206893662065252, -79.89299219912829]).addTo(mapSur);
 
-let mapCentro = L.map('map-centro').setView([-2.191279, -79.893536], 18)
-let markerCentro = L.marker([-2.191279, -79.893536]).addTo(mapCentro);
+let mapCentro = L.map('map-centro').setView([-2.1890482576417787, -79.88361163214269], 15)
+let markerCentro = L.marker([-2.1890482576417787, -79.88361163214269]).addTo(mapCentro);
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2pjYjc3NyIsImEiOiJja3htZG91M28zbmZnMnVxOW42cWdmZjFzIn0.5eWGpvp79hGFa3QK6WdpXA', {
     maxZoom: 25,

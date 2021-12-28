@@ -21,6 +21,7 @@ const serviciosSeccion = document.getElementById("seleccion-servicio")
 const serviciosDiv = document.getElementById("servicios-control")
 const serviciosSelect = document.getElementById("servicio")
 const costoServicio = document.getElementById("costo")
+const costoTotal = document.getElementById("costo-iva")
 const siguienteBtn = document.getElementById("siguienteBtn")
 //Sucursal
 const datosReserva = document.getElementById("seleccion-datos")
@@ -85,9 +86,9 @@ const horarios = [
 
 
 const sucursales = [
-    {nombre: "sede-sur", direccion: "barrio centenario", puntoGeografico: "-2.170013, -79.899671",horario:JSON.parse(JSON.stringify(horarios)) },
-    {nombre: "sede-centro", direccion: "boyaca y junin", puntoGeografico: "-2.170013, -79.899671",horario:JSON.parse(JSON.stringify(horarios)) },
-    {nombre: "sede-norte", direccion: "Avenida 46 NO 203", puntoGeografico: "-2.170013, -79.899671",horario:JSON.parse(JSON.stringify(horarios)) },
+    {nombre: "sede-sur", direccion: "6 de marzo y Francisco Segura", puntoGeograficoX: -2.2206893662065252,puntoGeograficoY:  -79.89299219912829 },
+    {nombre: "sede-centro", direccion: "boyaca y junin", puntoGeograficoX: -2.1890482576417787,puntoGeograficoY:-79.88361163214269},
+    {nombre: "sede-norte", direccion: "Avenida 46 NO 203", puntoGeograficoX: -2.1677826347720885,puntoGeograficoY:  -79.94102479840805},
 
 ]
 
@@ -167,8 +168,9 @@ function cargarCosto(servicio){
             costo = e['costo']
         }
     })
-    
+    let costoIva = costo + (costo * 0.12)
     costoServicio.innerText = `$${costo}`
+    costoTotal.innerText = `$${costoIva}`
 }
 
 
@@ -202,7 +204,7 @@ function cargarHorarios() {
     
         //Limpiar horarios
         horariosSelect.innerHTML = '<option selected>Seleccione el turno</option>'
-        sucursal['horario'].forEach(e => {
+        horarios.forEach(e => {
             if(Object.keys(e)[0] != 'noche'){
                 horariosSelect.innerHTML += ` <option value='${Object.keys(e)[0]}'>${Object.keys(e)[0].toUpperCase()}</option>`
             }
@@ -225,7 +227,7 @@ function cargarHorarios() {
     
         //Limpiar horarios
         horariosSelect.innerHTML = '<option selected>Seleccione el turno</option>'
-        sucursal['horario'].forEach(e => {
+        horarios.forEach(e => {
             horariosSelect.innerHTML += ` <option value=${Object.keys(e)[0]}>${Object.keys(e)[0].toUpperCase()}</option>`
         })
     
@@ -236,7 +238,7 @@ function cargarHorarios() {
 
 function cargarDisponibles(horario) {
     let horasOcupadas = []
-    sucursal['horario'].forEach( (e) => {
+    horarios.forEach( (e) => {
         if(Object.keys(e)[0] == horario.value){
             turno = e[horario.value]
         }
@@ -266,6 +268,14 @@ btnReserva.addEventListener('click', () => {
     horaReserva.value = reserva.hora
     sucursalReserva.value = reserva.sucursal['nombre'].toUpperCase()
     direccionReserva.value = reserva.sucursal['direccion'].toUpperCase()
+    let map = L.map('map').setView([sucursal['puntoGeograficoX'],sucursal['puntoGeograficoY']], 18)
+    let markerMap = L.marker([sucursal['puntoGeograficoX'],sucursal['puntoGeograficoY']]).addTo(map);
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2pjYjc3NyIsImEiOiJja3htZG91M28zbmZnMnVxOW42cWdmZjFzIn0.5eWGpvp79hGFa3QK6WdpXA', {
+    maxZoom: 25,
+    attribution: 'Datos del mapa de &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, ' + '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imágenes © <a href="https://www.mapbox.com/">Mapbox</a>', 
+    id: 'mapbox/streets-v11'
+    }).addTo(map);
+
     servicioReserva.value = reserva.servicio['nombre'].toUpperCase()
     subtotalReserva.value = reserva.servicio['costo']
     totalReserva.value = reserva.servicio['costo'] + (reserva.servicio['costo'] * 0.12)
