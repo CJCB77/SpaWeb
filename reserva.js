@@ -35,6 +35,18 @@ const horasDisponibles = document.getElementById("hora")
 //Boton de reserva
 const btnReserva = document.getElementById("reservarBtn")
 
+//Datos de la reserva
+const mostrarReserva = document.getElementById("datos-reserva")
+const nombreReserva = document.getElementById("nombre-reserva")
+const fechaReserva = document.getElementById("fecha-reserva")
+const horaReserva = document.getElementById("hora-reserva")
+const sucursalReserva = document.getElementById("sucursal-reserva")
+const direccionReserva = document.getElementById("direccion-reserva")
+const servicioReserva = document.getElementById("servicio-reserva")
+const subtotalReserva = document.getElementById("subtotal-reserva")
+const totalReserva = document.getElementById("total-reserva")
+
+
 class Reserva {
     constructor(usuario, sucursal, servicio, fecha, hora){
         this.usuario = usuario
@@ -53,37 +65,14 @@ if (listaLocalReservas) {
     listaReservas = listaLocalReservas
 }
 
-const servicios = [
-    {
-        nombre: 'depilacion', 
-        descripcion: 'En WebSpa le ofrecemos un excelente servicio de depilacion, contamos con depilacion tradicional con cera.',
-        duracion: '25 mins',
-        fotografia: 'imgs/servicios/waxing.jpg/',
-        costo: 30,
-        tipo: "normal"
-        
-    }
-    ,
-    {
-        nombre: 'tratamiento facial', 
-        descripcion: 'En WebSpa le ofrecemos un los mejores tratamientos rejuvenecedores y exofoliantes.',
-        duracion: '30 mins',
-        fotografia: 'imgs/servicios/facial.jpg',
-        costo: 20,
-        tipo: "normal"
-        
-    }
-    ,
-    {
-        nombre: 'terapia de masajes', 
-        descripcion: 'En WebSpa tenemos masajistas que se encargaran de brindar la mejor terapia de relajacion para el estres y el cansancio.',
-        duracion: '40 mins',
-        fotografia: 'imgs/servicios/masaje.jpg',
-        costo: 40,
-        tipo: "VIP"
-        
-    }
-]
+//Servicios
+let servicios = []
+const listaLocalServicios = JSON.parse(localStorage.getItem('servicios'))
+
+if (listaLocalServicios) {
+    servicios = listaLocalServicios
+}
+
 
 //Sucursales
 const dias = ['lunes','martes','miercoles','jueves','viernes','sabado','domingo']
@@ -101,6 +90,8 @@ const sucursales = [
     {nombre: "sede-norte", direccion: "Avenida 46 NO 203", puntoGeografico: "-2.170013, -79.899671",horario:JSON.parse(JSON.stringify(horarios)) },
 
 ]
+
+
 
 //Cargar sucursales
 sucursales.forEach(e => {
@@ -256,7 +247,6 @@ function cargarDisponibles(horario) {
             horasOcupadas.push(reserva.hora)
         }
     })
-    console.log(horasOcupadas)
     turno.forEach((hora) => {
         if(!(horasOcupadas.includes(hora))){
             horasDisponibles.innerHTML += `<option value='${hora}'>${hora}</option>`
@@ -267,8 +257,21 @@ function cargarDisponibles(horario) {
 }
 
 btnReserva.addEventListener('click', () => {
-    reserva = new Reserva(usuario, sucursal, servicioReservado ,fecha.value, horasDisponibles.value)
+    let reserva = new Reserva(usuario, sucursal, servicioReservado ,fecha.value, horasDisponibles.value)
     listaReservas.push(reserva)
     localStorage.setItem("reservas", JSON.stringify(listaReservas))
+
+    nombreReserva.value = `${reserva.usuario['nombre']}  ${reserva.usuario['apellido']}` 
+    fechaReserva.value = reserva.fecha
+    horaReserva.value = reserva.hora
+    sucursalReserva.value = reserva.sucursal['nombre'].toUpperCase()
+    direccionReserva.value = reserva.sucursal['direccion'].toUpperCase()
+    servicioReserva.value = reserva.servicio['nombre'].toUpperCase()
+    subtotalReserva.value = reserva.servicio['costo']
+    totalReserva.value = reserva.servicio['costo'] + (reserva.servicio['costo'] * 0.12)
+    
+    datosReserva.style.display = "none"
+    mostrarReserva.style.display = "block"
+
    
 })

@@ -131,6 +131,11 @@
   display: none;
 }
 
+.datos-reserva {
+  animation: fadeIn 2s ease-out;
+  display: none;
+}
+
 @keyframes fadeIn {
   0% {
     transform: translateX(-100%);
