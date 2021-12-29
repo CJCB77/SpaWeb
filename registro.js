@@ -31,6 +31,12 @@ if (listaUsuariosLocal) {
 
 
 registroBtn.addEventListener('click', () => {
+    usuarioExiste = false
+    listaUsuarios.forEach((usuario) => {
+        if (usuario['cedula'] == cedula.value ){
+            usuarioExiste = true
+        }
+    })
     if(
         (cedula.value === '' || cedula.value == null) ||
         (nombre.value === '' || nombre.value == null) ||
@@ -38,21 +44,23 @@ registroBtn.addEventListener('click', () => {
         (direccion.value === '' || direccion.value == null) ||
         (celular.value === '' || celular.value == null) ||
         (correo.value === '' |correo.value == null) 
-       ) {
-           mensajeError.innerText = "Por favor llene todos los campos"
-    } 
-    else{
-        let usuario = new Usuario(cedula.value,nombre.value, apellido.value, direccion.value, 
-                                    celular.value, correo.value)
-        listaUsuarios.push(usuario)
-        localStorage.setItem('usuarios', JSON.stringify(listaUsuarios))
-        mensajeError.style.color = "#000"
-        mensajeError.innerText = "Sus datos han sido registrados con exito!"
+       ) 
+        {
+            mensajeError.innerText = "Por favor llene todos los campos"
+        } else if(usuarioExiste) {
+           mensajeError.innerText = "El usuario ya esta registrado!"
 
-        window.location = "reserva.html"    
+        }else{
+            let usuario = new Usuario(cedula.value,nombre.value, apellido.value, direccion.value, 
+                                        celular.value, correo.value)
+            listaUsuarios.push(usuario)
+            localStorage.setItem('usuarios', JSON.stringify(listaUsuarios))
+            mensajeError.style.color = "#000"
+            mensajeError.innerText = "Sus datos han sido registrados con exito!"
+
+            window.location = "reserva.html"    
             
-
-    }
+         }
 
 })
 

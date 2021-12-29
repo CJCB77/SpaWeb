@@ -46,6 +46,7 @@ const direccionReserva = document.getElementById("direccion-reserva")
 const servicioReserva = document.getElementById("servicio-reserva")
 const subtotalReserva = document.getElementById("subtotal-reserva")
 const totalReserva = document.getElementById("total-reserva")
+const map = document.getElementById("map")
 
 
 class Reserva {
@@ -275,6 +276,9 @@ btnReserva.addEventListener('click', () => {
     attribution: 'Datos del mapa de &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, ' + '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imágenes © <a href="https://www.mapbox.com/">Mapbox</a>', 
     id: 'mapbox/streets-v11'
     }).addTo(map);
+    setTimeout(() => {
+        map.invalidateSize()
+    }, 100)
 
     servicioReserva.value = reserva.servicio['nombre'].toUpperCase()
     subtotalReserva.value = reserva.servicio['costo']

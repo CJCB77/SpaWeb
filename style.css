@@ -137,7 +137,7 @@
 
 .datos-reserva {
   animation: fadeIn 2s ease-out;
-
+  display: none;
 }
 
 @keyframes fadeIn {
