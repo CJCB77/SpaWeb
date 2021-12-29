@@ -246,7 +246,7 @@ function cargarDisponibles(horario) {
     })
     horasDisponibles.innerHTML = ""
     listaReservas.forEach( reserva => {
-        if(reserva.fecha == fecha.value){
+        if(reserva.fecha == fecha.value && reserva['sucursal'].nombre == sucursal['nombre']){
             horasOcupadas.push(reserva.hora)
         }
     })
